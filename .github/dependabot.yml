@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # GitHub Actions used by the workflows.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # No pip section: the generator and the checker are the only Python here,
+  # and their two dependencies are installed by the workflow, not pinned in a
+  # requirements file.

@@ -1,0 +1,69 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag Version"
+        required: true
+        default: "v"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      # There is no manifest.json here: the version lives in the generator and
+      # ends up in every blueprint name, which is what a user sees in Home
+      # Assistant. Bumping it there and regenerating keeps the eight files and
+      # the tag in step.
+      - name: Set the version and regenerate
+        id: bump
+        run: |
+          pip install pyyaml jinja2
+          VERSION="${{ github.event.inputs.tag }}"
+          VERSION="${VERSION#v}"
+          sed -i "s/^VERSION = \".*\"/VERSION = \"${VERSION}\"/" scripts/gen_blueprints.py
+          python3 scripts/gen_blueprints.py
+          python3 scripts/gen_readme.py
+          python3 scripts/check_blueprints.py
+          git config --global user.email "moranderic31@gmail.com"
+          git config --global user.name "Elwinmage"
+          git commit -a -m "Update version"
+          git push origin HEAD:main
+          SHA=`git rev-parse HEAD`
+          echo "tag_sha=${SHA}" >> $GITHUB_OUTPUT
+
+      - name: Create tag
+        if: steps.bump.outcome == 'success'
+        uses: actions/github-script@v9
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ github.event.inputs.tag }}',
+              sha: '${{ steps.bump.outputs.tag_sha }}'
+            })
+
+      # The zip is a convenience for manual installs; the supported path is
+      # the import badge, which reads the raw file from the default branch.
+      - name: Pack the blueprints
+        run: zip -r blueprints.zip blueprints
+
+      - name: Create Release with Zip Asset
+        uses: ncipollo/release-action@v1
+        with:
+          prerelease: true
+          tag: ${{ github.event.inputs.tag }}
+          artifacts: "blueprints.zip"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}

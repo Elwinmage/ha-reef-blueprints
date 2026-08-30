@@ -1,0 +1,30 @@
+name: Validate blueprints
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install pyyaml jinja2
+
+      # The generated files must match what the generator produces. A hand
+      # edit to a YAML would otherwise survive until someone regenerates and
+      # wonders where their change went.
+      - name: Check the generated files are up to date
+        run: |
+          python3 scripts/gen_blueprints.py
+          python3 scripts/gen_readme.py
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Generated files are stale. Run the scripts and commit:"
+            git --no-pager diff --stat
+            exit 1
+          fi
+
+      - name: Validate
+        run: python3 scripts/check_blueprints.py
