@@ -34,10 +34,19 @@ LANGS = [
     ("pt", "pt", "doc/pt/README.pt.md"),
 ]
 
+# Clone counter, kept in a gist by the github-clone-count-badge action: the
+# GitHub API only serves the last 14 days, so the count has to live outside the
+# repository.
+CLONE_GIST = (
+    "https://gist.githubusercontent.com/Elwinmage/"
+    "b4d01d48acce8199974b015b9ea23b3b/raw/clone.json"
+)
+
 BADGES = f"""[![GH-release](https://img.shields.io/github/v/release/Elwinmage/ha-reef-blueprints.svg?style=flat-square)]({REPO}/releases)
 [![Ruff Status]({REPO}/actions/workflows/main.yml/badge.svg)]({REPO}/actions/workflows/main.yml)
 [![Validate blueprints]({REPO}/actions/workflows/validate.yml/badge.svg)]({REPO}/actions/workflows/validate.yml)
 [![GH-last-commit](https://img.shields.io/github/last-commit/Elwinmage/ha-reef-blueprints.svg?style=flat-square)]({REPO}/commits/main)
+[![GitHub Clones](https://img.shields.io/badge/dynamic/json?color=success&label=Clone&query=count&url={CLONE_GIST}&logo=github)](https://github.com/MShawon/github-clone-count-badge)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![BuyMeCoffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=flat-square)](https://paypal.me/Elwinmage)"""
 
