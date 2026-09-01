@@ -57,13 +57,13 @@ jobs:
       # The zip is a convenience for manual installs; the supported path is
       # the import badge, which reads the raw file from the default branch.
       - name: Pack the blueprints
-        run: zip -r blueprints.zip blueprints
+        run: zip -r reef_blueprints.zip blueprints
 
       - name: Create Release with Zip Asset
         uses: ncipollo/release-action@v1
         with:
           prerelease: true
           tag: ${{ github.event.inputs.tag }}
-          artifacts: "blueprints.zip"
+          artifacts: "reef_blueprints.zip"
           allowUpdates: true
           token: ${{ secrets.GITHUB_TOKEN }}
