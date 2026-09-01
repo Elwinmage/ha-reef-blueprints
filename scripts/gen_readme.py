@@ -52,7 +52,7 @@ BADGES = f"""[![GH-release](https://img.shields.io/github/v/release/Elwinmage/ha
 
 T: dict[str, dict[str, str]] = {
     "en": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Part of the [**ReefTech Project Ecosystem**]({SITE})",
         "languages": "Supported Languages",
         "intro": (
@@ -130,7 +130,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "fr": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Fait partie de l'[**écosystème ReefTech**]({SITE})",
         "languages": "Langues disponibles",
         "intro": (
@@ -212,7 +212,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "de": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Teil des [**ReefTech Project Ecosystem**]({SITE})",
         "languages": "Verfügbare Sprachen",
         "intro": (
@@ -295,7 +295,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "es": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Parte del [**ecosistema ReefTech**]({SITE})",
         "languages": "Idiomas disponibles",
         "intro": (
@@ -375,7 +375,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "it": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Parte dell'[**ecosistema ReefTech**]({SITE})",
         "languages": "Lingue disponibili",
         "intro": (
@@ -456,7 +456,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "nl": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Onderdeel van het [**ReefTech Project Ecosystem**]({SITE})",
         "languages": "Beschikbare talen",
         "intro": (
@@ -539,7 +539,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "pl": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Część [**ekosystemu ReefTech**]({SITE})",
         "languages": "Dostępne języki",
         "intro": (
@@ -618,7 +618,7 @@ T: dict[str, dict[str, str]] = {
         ),
     },
     "pt": {
-        "title": "Reef blueprints 🔔",
+        "title": "Reef blueprints 🐬",
         "ecosystem_line": f"Parte do [**ecossistema ReefTech**]({SITE})",
         "languages": "Idiomas disponíveis",
         "intro": (
