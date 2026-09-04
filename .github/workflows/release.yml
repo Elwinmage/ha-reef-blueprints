@@ -19,7 +19,7 @@ jobs:
 
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       # There is no manifest.json here: the version lives in the generator and
       # ends up in every blueprint name, which is what a user sees in Home
