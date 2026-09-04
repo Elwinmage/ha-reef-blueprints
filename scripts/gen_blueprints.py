@@ -19,7 +19,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 REPO = "https://github.com/Elwinmage/ha-reef-blueprints"
 OUT = Path("blueprints/automation")
 
@@ -37,6 +37,17 @@ LANGS = ["en", "fr", "de", "es", "it", "nl", "pl", "pt"]
 #     unavailable entity, so `reef_role` vanishes exactly when the device goes
 #     offline. It therefore works from a device list the user picks, which is
 #     also why there is no "exclude" selector -- you choose what to watch.
+#
+# Notification throttling:
+#
+#   * Maintenance alerts are gated by a modulo check on the clock hour so
+#     they fire only once per `reminder_hours`-wide window (e.g. at hours
+#     0, 4, 8, 12, 16, 20 for a 4-hour interval).
+#
+#   * Unreachable alerts are sent every run (fast detection) but carry
+#     `alert_once: true` so Android does not re-buzz after the first
+#     delivery.  iOS silently replaces the notification via the existing
+#     `tag`, so neither platform spams the user.
 # ---------------------------------------------------------------------------
 
 BODY = """
@@ -49,6 +60,7 @@ variables:
   notify_channel: !input notify_channel
   notify_maintenance: !input notify_maintenance
   maintenance_respect_switch: !input maintenance_respect_switch
+  reminder_hours: !input reminder_hours
   notify_unavailable: !input notify_unavailable
   watched_devices: !input watched_devices
   # The shared contract. Every integration of the ecosystem tags its
@@ -61,11 +73,20 @@ action:
       alerts: >
         {%- set ns = namespace(items=[]) -%}
 
-        {#- 1) Maintenance overdue.
+        {#- Maintenance alerts fire only inside a time window whose width
+            equals the configured reminder_hours.  With reminder_hours=4
+            the window opens at hours 0, 4, 8, 12, 16, 20 for five
+            minutes each -- just enough for the /5 trigger to hit it
+            exactly once. -#}
+        {%- set maint_window = (now().hour % (reminder_hours | int) == 0)
+                               and now().minute < 5 -%}
+
+        {#- 1) Maintenance overdue -- gated by maint_window so the user
+            is not buzzed every five minutes.
             Scans the button domain only: a maintenance task is always a
             button, and iterating one domain instead of the whole state
             machine keeps this cheap at every run. -#}
-        {%- if notify_maintenance -%}
+        {%- if notify_maintenance and maint_window -%}
           {%- for e in states.button -%}
             {%- set role = e.attributes.get('reef_role') or '' -%}
             {%- if role.startswith(role_maintenance_prefix) -%}
@@ -92,7 +113,9 @@ action:
 
         {#- 2) Unreachable devices: every entity of a watched device is
             unavailable. Driven by the picked list rather than by reef_role,
-            which an unavailable entity no longer exposes. -#}
+            which an unavailable entity no longer exposes.
+            Checked every run for fast detection; alert_once in the
+            notification data prevents repeated buzzing. -#}
         {%- if notify_unavailable -%}
           {%- for d in watched_devices -%}
             {%- set dents = device_entities(d) -%}
@@ -124,6 +147,8 @@ action:
                 # Unique tag per (device, alert type) so a new notification
                 # replaces the previous one instead of stacking.
                 notif_tag: "reef_{{ repeat.item.device }}_{{ repeat.item.type }}"
+                # Carried into the inner loop for the alert_once flag.
+                alert_type: "{{ repeat.item.type }}"
             - alias: "Dispatch to each selected mobile device"
               repeat:
                 for_each: "{{ notify_devices }}"
@@ -140,12 +165,25 @@ action:
                       title: "{{ title }}"
                       message: "{{ message }}"
                       data: >-
-                        {{
-                          {
-                            'tag': notif_tag,
-                            'channel': notify_channel
-                          } if notify_channel else {'tag': notif_tag}
-                        }}
+                        {%- if alert_type == 'unreachable' -%}
+                          {{
+                            {
+                              'tag': notif_tag,
+                              'channel': notify_channel,
+                              'alert_once': true
+                            } if notify_channel else {
+                              'tag': notif_tag,
+                              'alert_once': true
+                            }
+                          }}
+                        {%- else -%}
+                          {{
+                            {
+                              'tag': notif_tag,
+                              'channel': notify_channel
+                            } if notify_channel else {'tag': notif_tag}
+                          }}
+                        {%- endif -%}
 """
 
 # ---------------------------------------------------------------------------
@@ -192,6 +230,12 @@ STRINGS: dict[str, dict[str, str]] = {
             "When enabled, a task whose «(notifications)» switch is off is "
             "skipped even when overdue. Leave it on unless you want the alert "
             "regardless of the switches."
+        ),
+        "reminder_hours": "Reminder interval (hours)",
+        "reminder_hours_desc": (
+            "How often a maintenance alert is re-sent while the task stays "
+            "overdue. Set 1 for hourly, 24 for once a day. Unreachable-device "
+            "alerts are always sent once and do not repeat."
         ),
         "unreachable_section": "Unreachable devices",
         "notify_unavailable": "Enable",
@@ -246,6 +290,13 @@ STRINGS: dict[str, dict[str, str]] = {
             "Si activé, une tâche dont l'interrupteur « (notifications) » est "
             "coupé est ignorée même en retard. Laissez activé, sauf si vous "
             "voulez l'alerte quels que soient les interrupteurs."
+        ),
+        "reminder_hours": "Intervalle de rappel (heures)",
+        "reminder_hours_desc": (
+            "Fréquence de renvoi d'une alerte de maintenance tant que la "
+            "tâche reste en retard. 1 pour chaque heure, 24 pour une fois par "
+            "jour. Les alertes d'appareils injoignables ne sont envoyées "
+            "qu'une seule fois."
         ),
         "unreachable_section": "Appareils injoignables",
         "notify_unavailable": "Activer",
@@ -303,6 +354,13 @@ STRINGS: dict[str, dict[str, str]] = {
             "übersprungen. Aktiviert lassen, außer Sie wollen die Meldung "
             "unabhängig von den Schaltern."
         ),
+        "reminder_hours": "Erinnerungsintervall (Stunden)",
+        "reminder_hours_desc": (
+            "Wie oft eine Wartungsmeldung erneut gesendet wird, solange die "
+            "Aufgabe überfällig bleibt. 1 für stündlich, 24 für einmal am "
+            "Tag. Meldungen nicht erreichbarer Geräte werden nur einmal "
+            "gesendet."
+        ),
         "unreachable_section": "Nicht erreichbare Geräte",
         "notify_unavailable": "Aktivieren",
         "watched_devices": "Zu überwachende Geräte",
@@ -356,6 +414,12 @@ STRINGS: dict[str, dict[str, str]] = {
             "Si está activado, una tarea cuyo interruptor «(notificaciones)» "
             "esté apagado se omite aunque esté vencida. Déjelo activado salvo "
             "que quiera el aviso pase lo que pase."
+        ),
+        "reminder_hours": "Intervalo de recordatorio (horas)",
+        "reminder_hours_desc": (
+            "Frecuencia de reenvío de una alerta de mantenimiento mientras la "
+            "tarea siga vencida. 1 para cada hora, 24 para una vez al día. "
+            "Las alertas de dispositivos no disponibles se envían una sola vez."
         ),
         "unreachable_section": "Dispositivos no disponibles",
         "notify_unavailable": "Activar",
@@ -411,6 +475,13 @@ STRINGS: dict[str, dict[str, str]] = {
             "Se attivo, un'attività il cui interruttore «(notifiche)» è spento "
             "viene saltata anche se scaduta. Lasciate attivo, a meno che non "
             "vogliate l'avviso a prescindere dagli interruttori."
+        ),
+        "reminder_hours": "Intervallo di promemoria (ore)",
+        "reminder_hours_desc": (
+            "Frequenza di reinvio di una notifica di manutenzione finché "
+            "l'attività resta scaduta. 1 per ogni ora, 24 per una volta al "
+            "giorno. Le notifiche di dispositivi irraggiungibili vengono "
+            "inviate una sola volta."
         ),
         "unreachable_section": "Dispositivi irraggiungibili",
         "notify_unavailable": "Attiva",
@@ -468,6 +539,13 @@ STRINGS: dict[str, dict[str, str]] = {
             "«(meldingen)» uit staat overgeslagen, ook bij achterstand. Laat "
             "aan staan, tenzij u de melding hoe dan ook wilt."
         ),
+        "reminder_hours": "Herinneringsinterval (uren)",
+        "reminder_hours_desc": (
+            "Hoe vaak een onderhoudsmelding opnieuw wordt verstuurd zolang de "
+            "taak achterstallig blijft. 1 voor elk uur, 24 voor eenmaal per "
+            "dag. Meldingen van onbereikbare apparaten worden slechts één keer "
+            "verzonden."
+        ),
         "unreachable_section": "Onbereikbare apparaten",
         "notify_unavailable": "Inschakelen",
         "watched_devices": "Te bewaken apparaten",
@@ -522,6 +600,12 @@ STRINGS: dict[str, dict[str, str]] = {
             "jest pomijane nawet gdy zalega. Zostaw włączone, chyba że chcesz "
             "alert niezależnie od przełączników."
         ),
+        "reminder_hours": "Interwał przypomnienia (godziny)",
+        "reminder_hours_desc": (
+            "Jak często powtarzany jest alert konserwacji, dopóki zadanie "
+            "pozostaje zaległe. 1 co godzinę, 24 raz dziennie. Alerty "
+            "niedostępnych urządzeń są wysyłane tylko raz."
+        ),
         "unreachable_section": "Niedostępne urządzenia",
         "notify_unavailable": "Włącz",
         "watched_devices": "Urządzenia do obserwacji",
@@ -575,6 +659,13 @@ STRINGS: dict[str, dict[str, str]] = {
             "Se ativado, uma tarefa cujo interruptor «(notificações)» esteja "
             "desligado é ignorada mesmo em atraso. Deixe ativado, salvo se "
             "quiser o aviso independentemente dos interruptores."
+        ),
+        "reminder_hours": "Intervalo de lembrete (horas)",
+        "reminder_hours_desc": (
+            "Com que frequência um alerta de manutenção é reenviado enquanto "
+            "a tarefa continuar em atraso. 1 para de hora em hora, 24 para "
+            "uma vez por dia. Os alertas de aparelhos inacessíveis são "
+            "enviados apenas uma vez."
         ),
         "unreachable_section": "Aparelhos inacessíveis",
         "notify_unavailable": "Ativar",
@@ -640,6 +731,17 @@ blueprint:
             {s["respect_switch_desc"]}
           default: true
           selector: {{boolean: {{}}}}
+        reminder_hours:
+          name: {s["reminder_hours"]}
+          description: >
+            {s["reminder_hours_desc"]}
+          default: 4
+          selector:
+            number:
+              min: 1
+              max: 24
+              unit_of_measurement: "h"
+              mode: slider
 
     unreachable_section:
       name: {s["unreachable_section"]}

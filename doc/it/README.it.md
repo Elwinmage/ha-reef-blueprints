@@ -103,6 +103,7 @@ Le lingue sono blueprint distinti: importarne due ne dà due. Home Assistant non
 
 - L'automazione gira ogni 5 minuti. Percorre solo il dominio `button`, quindi il costo non cresce con la dimensione della vostra installazione.
 - Una notifica per dispositivo mobile, etichettata per dispositivo e tipo di avviso: un nuovo avviso sostituisce il precedente invece di accumularsi.
+- Le notifiche di manutenzione vengono reinviate a un intervallo configurabile (1–24 h, predefinito 4 h). Le notifiche di dispositivi irraggiungibili vengono inviate una sola volta (`alert_once`).
 - Il campo canale Android è ignorato da iOS. Lasciatelo com'è se usate solo iPhone.
 
 ## Sviluppo

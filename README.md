@@ -103,6 +103,7 @@ The languages are separate blueprints: importing two of them gives you two entri
 
 - The automation runs every 5 minutes. It scans the `button` domain only, so the cost does not grow with the size of your installation.
 - One notification per mobile device, tagged per device and alert type: a new alert replaces the previous one instead of stacking.
+- Maintenance alerts are re-sent at a configurable interval (1–24 h, default 4 h). Unreachable-device alerts are sent once and do not repeat (`alert_once`).
 - The Android channel field is ignored by iOS. Leave it as is if you only use iPhones.
 
 ## Development

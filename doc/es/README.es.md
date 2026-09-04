@@ -103,6 +103,7 @@ Los idiomas son blueprints distintos: importar dos le da dos entradas. Home Assi
 
 - La automatización se ejecuta cada 5 minutos. Solo recorre el dominio `button`, así que el coste no crece con el tamaño de su instalación.
 - Una notificación por móvil, etiquetada por dispositivo y tipo de aviso: un aviso nuevo sustituye al anterior en lugar de apilarse.
+- Las alertas de mantenimiento se reenvían a un intervalo configurable (1–24 h, por defecto 4 h). Las alertas de dispositivos no disponibles se envían una sola vez (`alert_once`).
 - El campo de canal Android lo ignora iOS. Déjelo tal cual si solo usa iPhone.
 
 ## Desarrollo

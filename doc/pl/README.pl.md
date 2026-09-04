@@ -103,6 +103,7 @@ Języki to osobne blueprinty: zaimportowanie dwóch daje dwa wpisy. Home Assista
 
 - Automatyzacja uruchamia się co 5 minut. Przeszukuje wyłącznie domenę `button`, więc koszt nie rośnie wraz z rozmiarem instalacji.
 - Jedno powiadomienie na urządzenie mobilne, tagowane według urządzenia i typu alertu: nowy alert zastępuje poprzedni zamiast się nawarstwiać.
+- Alerty konserwacji są powtarzane w konfigurowalnym interwale (1–24 godz., domyślnie 4 godz.). Alerty niedostępnych urządzeń są wysyłane tylko raz (`alert_once`).
 - Pole kanału Androida jest ignorowane przez iOS. Zostaw je bez zmian, jeśli używasz tylko iPhone'ów.
 
 ## Rozwój

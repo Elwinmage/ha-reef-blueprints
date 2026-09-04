@@ -103,6 +103,7 @@ De talen zijn losse blueprints: wie er twee importeert krijgt er twee. Home Assi
 
 - De automatisering draait elke 5 minuten. Ze doorzoekt alleen het `button`-domein, dus de kosten groeien niet mee met de omvang van uw installatie.
 - Eén melding per mobiel apparaat, getagd per apparaat en type melding: een nieuwe melding vervangt de vorige in plaats van zich op te stapelen.
+- Onderhoudsmeldingen worden opnieuw verstuurd met een instelbaar interval (1–24 u, standaard 4 u). Meldingen van onbereikbare apparaten worden slechts één keer verzonden (`alert_once`).
 - Het Android-kanaalveld wordt door iOS genegeerd. Laat het staan als u alleen iPhones gebruikt.
 
 ## Ontwikkeling

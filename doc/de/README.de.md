@@ -103,6 +103,7 @@ Die Sprachen sind getrennte Blueprints: wer zwei importiert, hat zwei Einträge.
 
 - Die Automatisierung läuft alle 5 Minuten. Sie durchsucht nur die `button`-Domäne, der Aufwand wächst also nicht mit der Größe Ihrer Installation.
 - Eine Benachrichtigung je Mobilgerät, markiert nach Gerät und Meldungstyp: eine neue Meldung ersetzt die vorige, statt sich zu stapeln.
+- Wartungsmeldungen werden in einem einstellbaren Intervall (1–24 h, Standard 4 h) erneut gesendet. Meldungen nicht erreichbarer Geräte werden nur einmal gesendet (`alert_once`).
 - Das Android-Kanal-Feld wird von iOS ignoriert. Lassen Sie es unverändert, wenn Sie nur iPhones nutzen.
 
 ## Entwicklung

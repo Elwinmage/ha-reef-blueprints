@@ -103,6 +103,7 @@ Os idiomas são blueprints distintos: importar dois dá-lhe duas entradas. O Hom
 
 - A automação corre a cada 5 minutos. Percorre apenas o domínio `button`, portanto o custo não cresce com o tamanho da sua instalação.
 - Uma notificação por telemóvel, etiquetada por aparelho e tipo de aviso: um aviso novo substitui o anterior em vez de se empilhar.
+- Os alertas de manutenção são reenviados num intervalo configurável (1–24 h, predefinido 4 h). Os alertas de aparelhos inacessíveis são enviados apenas uma vez (`alert_once`).
 - O campo de canal Android é ignorado pelo iOS. Deixe-o como está se só usar iPhones.
 
 ## Desenvolvimento

@@ -112,6 +112,11 @@ T: dict[str, dict[str, str]] = {
             "One notification per mobile device, tagged per device and alert "
             "type: a new alert replaces the previous one instead of stacking."
         ),
+        "note_throttle": (
+            "Maintenance alerts are re-sent at a configurable interval "
+            "(1–24 h, default 4 h). Unreachable-device alerts are sent once "
+            "and do not repeat (`alert_once`)."
+        ),
         "note_ios": (
             "The Android channel field is ignored by iOS. Leave it as is if "
             "you only use iPhones."
@@ -192,6 +197,12 @@ T: dict[str, dict[str, str]] = {
             "Une notification par mobile, étiquetée par appareil et par type "
             "d'alerte : une nouvelle alerte remplace la précédente au lieu de "
             "s'empiler."
+        ),
+        "note_throttle": (
+            "Les alertes de maintenance sont renvoyées à un intervalle "
+            "configurable (1–24 h, défaut 4 h). Les alertes d'appareils "
+            "injoignables ne sont envoyées qu'une seule fois "
+            "(`alert_once`)."
         ),
         "note_ios": (
             "Le champ canal Android est ignoré par iOS. Laissez-le tel quel si "
@@ -276,6 +287,12 @@ T: dict[str, dict[str, str]] = {
             "Meldungstyp: eine neue Meldung ersetzt die vorige, statt sich zu "
             "stapeln."
         ),
+        "note_throttle": (
+            "Wartungsmeldungen werden in einem einstellbaren Intervall "
+            "(1–24 h, Standard 4 h) erneut gesendet. Meldungen nicht "
+            "erreichbarer Geräte werden nur einmal gesendet "
+            "(`alert_once`)."
+        ),
         "note_ios": (
             "Das Android-Kanal-Feld wird von iOS ignoriert. Lassen Sie es "
             "unverändert, wenn Sie nur iPhones nutzen."
@@ -356,6 +373,12 @@ T: dict[str, dict[str, str]] = {
             "Una notificación por móvil, etiquetada por dispositivo y tipo de "
             "aviso: un aviso nuevo sustituye al anterior en lugar de "
             "apilarse."
+        ),
+        "note_throttle": (
+            "Las alertas de mantenimiento se reenvían a un intervalo "
+            "configurable (1–24 h, por defecto 4 h). Las alertas de "
+            "dispositivos no disponibles se envían una sola vez "
+            "(`alert_once`)."
         ),
         "note_ios": (
             "El campo de canal Android lo ignora iOS. Déjelo tal cual si solo "
@@ -438,6 +461,12 @@ T: dict[str, dict[str, str]] = {
             "e tipo di avviso: un nuovo avviso sostituisce il precedente "
             "invece di accumularsi."
         ),
+        "note_throttle": (
+            "Le notifiche di manutenzione vengono reinviate a un "
+            "intervallo configurabile (1–24 h, predefinito 4 h). Le "
+            "notifiche di dispositivi irraggiungibili vengono inviate "
+            "una sola volta (`alert_once`)."
+        ),
         "note_ios": (
             "Il campo canale Android è ignorato da iOS. Lasciatelo com'è se "
             "usate solo iPhone."
@@ -519,6 +548,12 @@ T: dict[str, dict[str, str]] = {
             "melding: een nieuwe melding vervangt de vorige in plaats van zich "
             "op te stapelen."
         ),
+        "note_throttle": (
+            "Onderhoudsmeldingen worden opnieuw verstuurd met een "
+            "instelbaar interval (1–24 u, standaard 4 u). Meldingen "
+            "van onbereikbare apparaten worden slechts één keer "
+            "verzonden (`alert_once`)."
+        ),
         "note_ios": (
             "Het Android-kanaalveld wordt door iOS genegeerd. Laat het staan "
             "als u alleen iPhones gebruikt."
@@ -599,6 +634,12 @@ T: dict[str, dict[str, str]] = {
             "urządzenia i typu alertu: nowy alert zastępuje poprzedni zamiast "
             "się nawarstwiać."
         ),
+        "note_throttle": (
+            "Alerty konserwacji są powtarzane w konfigurowalnym "
+            "interwale (1–24 godz., domyślnie 4 godz.). Alerty "
+            "niedostępnych urządzeń są wysyłane tylko raz "
+            "(`alert_once`)."
+        ),
         "note_ios": (
             "Pole kanału Androida jest ignorowane przez iOS. Zostaw je bez "
             "zmian, jeśli używasz tylko iPhone'ów."
@@ -678,6 +719,12 @@ T: dict[str, dict[str, str]] = {
         "note_tag": (
             "Uma notificação por telemóvel, etiquetada por aparelho e tipo de "
             "aviso: um aviso novo substitui o anterior em vez de se empilhar."
+        ),
+        "note_throttle": (
+            "Os alertas de manutenção são reenviados num intervalo "
+            "configurável (1–24 h, predefinido 4 h). Os alertas de "
+            "aparelhos inacessíveis são enviados apenas uma vez "
+            "(`alert_once`)."
         ),
         "note_ios": (
             "O campo de canal Android é ignorado pelo iOS. Deixe-o como está "
@@ -805,6 +852,7 @@ def render(code: str) -> str:
 
 - {t["note_freq"]}
 - {t["note_tag"]}
+- {t["note_throttle"]}
 - {t["note_ios"]}
 
 ## {t["dev_title"]}

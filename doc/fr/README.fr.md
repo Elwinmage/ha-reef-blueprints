@@ -103,6 +103,7 @@ Les langues sont des blueprints distincts : en importer deux vous en donne deux.
 
 - L'automatisation tourne toutes les 5 minutes. Elle ne balaie que le domaine `button`, son coût ne croît donc pas avec la taille de votre installation.
 - Une notification par mobile, étiquetée par appareil et par type d'alerte : une nouvelle alerte remplace la précédente au lieu de s'empiler.
+- Les alertes de maintenance sont renvoyées à un intervalle configurable (1–24 h, défaut 4 h). Les alertes d'appareils injoignables ne sont envoyées qu'une seule fois (`alert_once`).
 - Le champ canal Android est ignoré par iOS. Laissez-le tel quel si vous n'utilisez que des iPhone.
 
 ## Développement
