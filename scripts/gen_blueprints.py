@@ -19,7 +19,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-VERSION = "1.1.0"
+VERSION = "1.1.1"
 REPO = "https://github.com/Elwinmage/ha-reef-blueprints"
 OUT = Path("blueprints/automation")
 
