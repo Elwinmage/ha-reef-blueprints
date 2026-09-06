@@ -96,7 +96,7 @@ action:
               {%- set notify_flag = e.attributes.get('notify') -%}
               {%- set muted = maintenance_respect_switch and notify_flag is false -%}
               {%- set dl = e.attributes.get('days_left') -%}
-              {%- if dl is number and dl < 0 and not muted -%}
+              {%- if dl is number and dl <= 0 and not muted -%}
                 {%- set d = device_id(e.entity_id) -%}
                 {%- set dname = (d and (device_attr(d, 'name_by_user')
                                         or device_attr(d, 'name')))
@@ -223,7 +223,8 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Enable",
         "notify_maintenance_desc": (
             "Watches every button carrying a `reef_role` that starts with "
-            "`maint_`, and alerts when its `days_left` goes negative."
+            "`maint_`, and alerts when its `days_left` reaches zero or goes "
+            "negative."
         ),
         "respect_switch": "Respect the per-task notification switches",
         "respect_switch_desc": (
@@ -247,6 +248,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "otherwise use to find it. Leave empty to disable the check."
         ),
         "msg_overdue": "Maintenance overdue by {days} days: {task}",
+        "msg_due_today": "Maintenance due today: {task}",
         "msg_unreachable": "Device unreachable",
         "title_prefix": "Reef — ",
     },
@@ -283,7 +285,8 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Activer",
         "notify_maintenance_desc": (
             "Surveille chaque bouton portant un `reef_role` commençant par "
-            "`maint_`, et alerte quand son `days_left` devient négatif."
+            "`maint_`, et alerte quand son `days_left` atteint zéro ou "
+            "devient négatif."
         ),
         "respect_switch": "Respecter les interrupteurs de notification par tâche",
         "respect_switch_desc": (
@@ -308,6 +311,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "trouver. Laissez vide pour désactiver ce contrôle."
         ),
         "msg_overdue": "Entretien en retard de {days} jours : {task}",
+        "msg_due_today": "Entretien à faire aujourd'hui : {task}",
         "msg_unreachable": "Appareil injoignable",
         "title_prefix": "Récif — ",
     },
@@ -345,7 +349,8 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Aktivieren",
         "notify_maintenance_desc": (
             "Überwacht jede Schaltfläche mit einer `reef_role`, die mit "
-            "`maint_` beginnt, und meldet, wenn ihr `days_left` negativ wird."
+            "`maint_` beginnt, und meldet, wenn ihr `days_left` null "
+            "erreicht oder negativ wird."
         ),
         "respect_switch": "Die Benachrichtigungsschalter je Aufgabe beachten",
         "respect_switch_desc": (
@@ -372,6 +377,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "deaktivieren."
         ),
         "msg_overdue": "Wartung {days} Tage überfällig: {task}",
+        "msg_due_today": "Wartung heute fällig: {task}",
         "msg_unreachable": "Gerät nicht erreichbar",
         "title_prefix": "Riff — ",
     },
@@ -407,7 +413,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Activar",
         "notify_maintenance_desc": (
             "Vigila cada botón con un `reef_role` que empiece por `maint_`, y "
-            "avisa cuando su `days_left` se vuelve negativo."
+            "avisa cuando su `days_left` llega a cero o se vuelve negativo."
         ),
         "respect_switch": "Respetar los interruptores de notificación por tarea",
         "respect_switch_desc": (
@@ -432,6 +438,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "comprobación."
         ),
         "msg_overdue": "Mantenimiento vencido hace {days} días: {task}",
+        "msg_due_today": "Mantenimiento pendiente hoy: {task}",
         "msg_unreachable": "Dispositivo no disponible",
         "title_prefix": "Arrecife — ",
     },
@@ -468,7 +475,8 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Attiva",
         "notify_maintenance_desc": (
             "Sorveglia ogni pulsante con un `reef_role` che inizia per "
-            "`maint_`, e avvisa quando il suo `days_left` diventa negativo."
+            "`maint_`, e avvisa quando il suo `days_left` raggiunge zero o "
+            "diventa negativo."
         ),
         "respect_switch": "Rispetta gli interruttori di notifica per attività",
         "respect_switch_desc": (
@@ -494,6 +502,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "il controllo."
         ),
         "msg_overdue": "Manutenzione scaduta da {days} giorni: {task}",
+        "msg_due_today": "Manutenzione da fare oggi: {task}",
         "msg_unreachable": "Dispositivo irraggiungibile",
         "title_prefix": "Barriera — ",
     },
@@ -531,7 +540,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Inschakelen",
         "notify_maintenance_desc": (
             "Bewaakt elke knop met een `reef_role` die met `maint_` begint, en "
-            "waarschuwt zodra de `days_left` negatief wordt."
+            "waarschuwt zodra de `days_left` nul bereikt of negatief wordt."
         ),
         "respect_switch": "Respecteer de meldingsschakelaars per taak",
         "respect_switch_desc": (
@@ -557,6 +566,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "uit te zetten."
         ),
         "msg_overdue": "Onderhoud {days} dagen achterstallig: {task}",
+        "msg_due_today": "Onderhoud vandaag gepland: {task}",
         "msg_unreachable": "Apparaat onbereikbaar",
         "title_prefix": "Rif — ",
     },
@@ -592,7 +602,8 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Włącz",
         "notify_maintenance_desc": (
             "Obserwuje każdy przycisk z `reef_role` zaczynającym się od "
-            "`maint_` i alarmuje, gdy jego `days_left` staje się ujemny."
+            "`maint_` i alarmuje, gdy jego `days_left` osiąga zero lub staje "
+            "się ujemny."
         ),
         "respect_switch": "Uwzględniaj przełączniki powiadomień poszczególnych zadań",
         "respect_switch_desc": (
@@ -616,6 +627,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "odnaleźć. Zostaw pustą, aby wyłączyć tę kontrolę."
         ),
         "msg_overdue": "Konserwacja zaległa o {days} dni: {task}",
+        "msg_due_today": "Konserwacja do wykonania dzisiaj: {task}",
         "msg_unreachable": "Urządzenie niedostępne",
         "title_prefix": "Rafa — ",
     },
@@ -652,7 +664,7 @@ STRINGS: dict[str, dict[str, str]] = {
         "notify_maintenance": "Ativar",
         "notify_maintenance_desc": (
             "Vigia cada botão com um `reef_role` começado por `maint_`, e avisa "
-            "quando o seu `days_left` fica negativo."
+            "quando o seu `days_left` chega a zero ou fica negativo."
         ),
         "respect_switch": "Respeitar os interruptores de notificação por tarefa",
         "respect_switch_desc": (
@@ -677,6 +689,7 @@ STRINGS: dict[str, dict[str, str]] = {
             "encontrá-la. Deixe vazia para desativar a verificação."
         ),
         "msg_overdue": "Manutenção em atraso de {days} dias: {task}",
+        "msg_due_today": "Manutenção para hoje: {task}",
         "msg_unreachable": "Aparelho inacessível",
         "title_prefix": "Recife — ",
     },
@@ -769,6 +782,17 @@ def render(lang: str) -> str:
     # The message is a Jinja expression, not a literal: the placeholders are
     # spliced into a concatenation. A trailing `~ ""` is stripped so a message
     # ending on a placeholder does not leave a dangling concat.
+    #
+    # Two messages now: one for the day the task is due (dl == 0), one for
+    # when it is already overdue (dl < 0).
+    due_today = (
+        s["msg_due_today"]
+        .replace(
+            "{task}", "\" ~ (e.attributes.get('friendly_name') or e.entity_id) ~ \""
+        )
+    )
+    due_today = f'"{due_today}"'.replace(' ~ ""', "").replace('"" ~ ', "")
+
     overdue = (
         s["msg_overdue"]
         .replace("{days}", '" ~ (-dl) ~ "')
@@ -777,8 +801,10 @@ def render(lang: str) -> str:
         )
     )
     overdue = f'"{overdue}"'.replace(' ~ ""', "").replace('"" ~ ', "")
+
+    combined = f"({due_today} if dl == 0 else {overdue})"
     body = (
-        BODY.replace("MSG_OVERDUE", overdue)
+        BODY.replace("MSG_OVERDUE", combined)
         .replace("MSG_UNREACHABLE", f"'{s['msg_unreachable']}'")
         .replace("TITLE_PREFIX", s["title_prefix"])
     )
