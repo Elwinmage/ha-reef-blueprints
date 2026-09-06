@@ -125,7 +125,7 @@ action:
                 {%- set ns.items = ns.items + [{
                   'type': 'maintenance',
                   'device': dname,
-                  'message': ("Maintenance due today: " if dl == 0 else "Maintenance overdue by " ~ (-dl) ~ " days: ") ~ (e.attributes.get('friendly_name') or e.entity_id),
+                  'message': ("Maintenance due today: " ~ (e.attributes.get('friendly_name') or e.entity_id) if dl == 0 else "Maintenance overdue by " ~ (-dl) ~ " days: " ~ (e.attributes.get('friendly_name') or e.entity_id)),
                 }] -%}
               {%- endif -%}
             {%- endif -%}
