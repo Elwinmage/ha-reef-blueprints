@@ -34,7 +34,7 @@ blueprint:
         notify_maintenance:
           name: Activar
           description: >
-            Vigila cada botón con un `reef_role` que empiece por `maint_`, y avisa cuando su `days_left` se vuelve negativo.
+            Vigila cada botón con un `reef_role` que empiece por `maint_`, y avisa cuando su `days_left` llega a cero o se vuelve negativo.
           default: true
           selector: {boolean: {}}
         maintenance_respect_switch:
@@ -117,7 +117,7 @@ action:
               {%- set notify_flag = e.attributes.get('notify') -%}
               {%- set muted = maintenance_respect_switch and notify_flag is false -%}
               {%- set dl = e.attributes.get('days_left') -%}
-              {%- if dl is number and dl < 0 and not muted -%}
+              {%- if dl is number and dl <= 0 and not muted -%}
                 {%- set d = device_id(e.entity_id) -%}
                 {%- set dname = (d and (device_attr(d, 'name_by_user')
                                         or device_attr(d, 'name')))
@@ -125,7 +125,7 @@ action:
                 {%- set ns.items = ns.items + [{
                   'type': 'maintenance',
                   'device': dname,
-                  'message': "Mantenimiento vencido hace " ~ (-dl) ~ " días: " ~ (e.attributes.get('friendly_name') or e.entity_id),
+                  'message': ("Mantenimiento pendiente hoy: " if dl == 0 else "Mantenimiento vencido hace " ~ (-dl) ~ " días: ") ~ (e.attributes.get('friendly_name') or e.entity_id),
                 }] -%}
               {%- endif -%}
             {%- endif -%}

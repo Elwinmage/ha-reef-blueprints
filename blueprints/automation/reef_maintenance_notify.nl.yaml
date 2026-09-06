@@ -34,7 +34,7 @@ blueprint:
         notify_maintenance:
           name: Inschakelen
           description: >
-            Bewaakt elke knop met een `reef_role` die met `maint_` begint, en waarschuwt zodra de `days_left` negatief wordt.
+            Bewaakt elke knop met een `reef_role` die met `maint_` begint, en waarschuwt zodra de `days_left` nul bereikt of negatief wordt.
           default: true
           selector: {boolean: {}}
         maintenance_respect_switch:
@@ -117,7 +117,7 @@ action:
               {%- set notify_flag = e.attributes.get('notify') -%}
               {%- set muted = maintenance_respect_switch and notify_flag is false -%}
               {%- set dl = e.attributes.get('days_left') -%}
-              {%- if dl is number and dl < 0 and not muted -%}
+              {%- if dl is number and dl <= 0 and not muted -%}
                 {%- set d = device_id(e.entity_id) -%}
                 {%- set dname = (d and (device_attr(d, 'name_by_user')
                                         or device_attr(d, 'name')))
@@ -125,7 +125,7 @@ action:
                 {%- set ns.items = ns.items + [{
                   'type': 'maintenance',
                   'device': dname,
-                  'message': "Onderhoud " ~ (-dl) ~ " dagen achterstallig: " ~ (e.attributes.get('friendly_name') or e.entity_id),
+                  'message': ("Onderhoud vandaag gepland: " if dl == 0 else "Onderhoud " ~ (-dl) ~ " dagen achterstallig: ") ~ (e.attributes.get('friendly_name') or e.entity_id),
                 }] -%}
               {%- endif -%}
             {%- endif -%}

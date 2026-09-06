@@ -34,7 +34,7 @@ blueprint:
         notify_maintenance:
           name: Włącz
           description: >
-            Obserwuje każdy przycisk z `reef_role` zaczynającym się od `maint_` i alarmuje, gdy jego `days_left` staje się ujemny.
+            Obserwuje każdy przycisk z `reef_role` zaczynającym się od `maint_` i alarmuje, gdy jego `days_left` osiąga zero lub staje się ujemny.
           default: true
           selector: {boolean: {}}
         maintenance_respect_switch:
@@ -117,7 +117,7 @@ action:
               {%- set notify_flag = e.attributes.get('notify') -%}
               {%- set muted = maintenance_respect_switch and notify_flag is false -%}
               {%- set dl = e.attributes.get('days_left') -%}
-              {%- if dl is number and dl < 0 and not muted -%}
+              {%- if dl is number and dl <= 0 and not muted -%}
                 {%- set d = device_id(e.entity_id) -%}
                 {%- set dname = (d and (device_attr(d, 'name_by_user')
                                         or device_attr(d, 'name')))
@@ -125,7 +125,7 @@ action:
                 {%- set ns.items = ns.items + [{
                   'type': 'maintenance',
                   'device': dname,
-                  'message': "Konserwacja zaległa o " ~ (-dl) ~ " dni: " ~ (e.attributes.get('friendly_name') or e.entity_id),
+                  'message': ("Konserwacja do wykonania dzisiaj: " if dl == 0 else "Konserwacja zaległa o " ~ (-dl) ~ " dni: ") ~ (e.attributes.get('friendly_name') or e.entity_id),
                 }] -%}
               {%- endif -%}
             {%- endif -%}

@@ -34,7 +34,7 @@ blueprint:
         notify_maintenance:
           name: Activer
           description: >
-            Surveille chaque bouton portant un `reef_role` commençant par `maint_`, et alerte quand son `days_left` devient négatif.
+            Surveille chaque bouton portant un `reef_role` commençant par `maint_`, et alerte quand son `days_left` atteint zéro ou devient négatif.
           default: true
           selector: {boolean: {}}
         maintenance_respect_switch:
@@ -117,7 +117,7 @@ action:
               {%- set notify_flag = e.attributes.get('notify') -%}
               {%- set muted = maintenance_respect_switch and notify_flag is false -%}
               {%- set dl = e.attributes.get('days_left') -%}
-              {%- if dl is number and dl < 0 and not muted -%}
+              {%- if dl is number and dl <= 0 and not muted -%}
                 {%- set d = device_id(e.entity_id) -%}
                 {%- set dname = (d and (device_attr(d, 'name_by_user')
                                         or device_attr(d, 'name')))
@@ -125,7 +125,7 @@ action:
                 {%- set ns.items = ns.items + [{
                   'type': 'maintenance',
                   'device': dname,
-                  'message': "Entretien en retard de " ~ (-dl) ~ " jours : " ~ (e.attributes.get('friendly_name') or e.entity_id),
+                  'message': ("Entretien à faire aujourd'hui : " if dl == 0 else "Entretien en retard de " ~ (-dl) ~ " jours : ") ~ (e.attributes.get('friendly_name') or e.entity_id),
                 }] -%}
               {%- endif -%}
             {%- endif -%}
