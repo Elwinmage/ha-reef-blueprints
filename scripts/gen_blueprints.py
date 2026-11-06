@@ -22,7 +22,7 @@ from pathlib import Path
 import gen_heater_test
 import gen_relay_watch
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 REPO = "https://github.com/Elwinmage/ha-reef-blueprints"
 OUT = Path("blueprints/automation")
 
