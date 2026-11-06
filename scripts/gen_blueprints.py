@@ -19,6 +19,9 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import gen_heater_test
+import gen_relay_watch
+
 VERSION = "1.2.0"
 REPO = "https://github.com/Elwinmage/ha-reef-blueprints"
 OUT = Path("blueprints/automation")
@@ -826,6 +829,9 @@ def main() -> None:
         path = OUT / f"reef_maintenance_notify.{lang}.yaml"
         path.write_text(render(lang), encoding="utf-8")
         print("written", path)
+
+    gen_heater_test.generate(LANGS, OUT, VERSION)
+    gen_relay_watch.generate(LANGS, OUT, VERSION)
 
 
 if __name__ == "__main__":
