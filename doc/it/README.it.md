@@ -14,13 +14,15 @@
 
 # Lingue disponibili: [<img src="https://flagicons.lipis.dev/flags/4x3/gb.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/README.md) [<img src="https://flagicons.lipis.dev/flags/4x3/fr.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/fr/README.fr.md) [<img src="https://flagicons.lipis.dev/flags/4x3/de.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/de/README.de.md) [<img src="https://flagicons.lipis.dev/flags/4x3/es.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/es/README.es.md) <img src="https://flagicons.lipis.dev/flags/4x3/it.svg" width="5%"/> [<img src="https://flagicons.lipis.dev/flags/4x3/nl.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/nl/README.nl.md) [<img src="https://flagicons.lipis.dev/flags/4x3/pl.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/pl/README.pl.md) [<img src="https://flagicons.lipis.dev/flags/4x3/pt.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/pt/README.pt.md)
 
-Blueprint di automazione Home Assistant per l'ecosistema ReefTech. Vi avvisano sul telefono delle **manutenzioni scadute** e dei **dispositivi irraggiungibili**, da qualunque integrazione provenga la vostra attrezzatura.
+Blueprint di automazione Home Assistant per l'ecosistema ReefTech. Vi avvisano sul telefono delle **manutenzioni scadute** e dei **dispositivi irraggiungibili**, da qualunque integrazione provenga la vostra attrezzatura, **provano i riscaldatori** uno alla volta e **sorvegliano i relè** per scoprire un apparecchio che consuma ancora una volta spento.
 
 <!-- ecosystem:start -->
 
 ## Progetti correlati
 
 I progetti ReefTech si incastrano tra loro: le integrazioni portano la tua attrezzatura in Home Assistant, la scheda la mostra e la pilota, e il backup la mantiene in funzione durante un blackout. Ognuno funziona anche da solo.
+
+<p align="center"><a href="https://elwinmage.github.io/reeftank/"><img src="https://raw.githubusercontent.com/Elwinmage/reeftank/main/assets/flower/ecosystem-flower.png" width="480" alt="ReefTech project ecosystem" /></a></p>
 
 <table>
   <tr>
@@ -50,13 +52,25 @@ I progetti ReefTech si incastrano tra loro: le integrazioni portano la tua attre
   <tr>
     <td><img src="https://raw.githubusercontent.com/Elwinmage/ha-reef-card/main/icon.png" width="64" alt="ha-reef-card" /></td>
     <td>🪸<br /><a href="https://github.com/Elwinmage/ha-reef-card"><b>ha-reef-card</b></a></td>
-    <td>Vista grafica interattiva di ogni dispositivo sulla tua dashboard, e unico modo per modificare le programmazioni avanzate. Legge le tre integrazioni tramite il contratto <code>reef_role</code> comune, senza configurazione lato scheda. Disegna anche i flussi di energia di reefbeatEnergyBackup.</td>
-    <td>tutte e tre le integrazioni</td>
+    <td>Vista grafica interattiva di ogni dispositivo sulla tua dashboard, e unico modo per modificare le programmazioni avanzate. Legge le tre integrazioni tramite il contratto <code>reef_role</code> comune, senza configurazione lato scheda. Disegna anche i flussi di energia di reefbeatEnergyBackup. La sua scheda acquario dà vita alla vostra vasca con ha-reeftank-component.</td>
+    <td>tutte e tre le integrazioni, e ha-reeftank-component per l'acquario</td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/Elwinmage/ha-reeftank-component/main/icon.png" width="64" alt="ha-reeftank-component" /></td>
+    <td>🐟<br /><a href="https://github.com/Elwinmage/ha-reeftank-component"><b>ha-reeftank-component</b></a></td>
+    <td>Un'immagine viva della vostra vasca sulla plancia: la vostra foto, illuminata dalle vostre vere lampade, con pesci e coralli animati, e sopra i vostri dispositivi ed entità. Conserva gli acquari e la loro fauna, registra le alimentazioni.</td>
+    <td>ha-reef-card</td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/Elwinmage/reeftank-catalog/main/icon.png" width="64" alt="reeftank-catalog" /></td>
+    <td>🐡<br /><a href="https://github.com/Elwinmage/reeftank-catalog"><b>reeftank-catalog</b></a></td>
+    <td>Pesci, coralli e texture della scheda acquario, scaricati e tenuti aggiornati da ha-reeftank-component.</td>
+    <td>ha-reeftank-component</td>
   </tr>
   <tr>
     <td><img src="https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/icon.png" width="64" alt="ha-reef-blueprints" /></td>
     <td>🐬<br /><b>ha-reef-blueprints</b><br /><i>(questo repository)</i></td>
-    <td>Blueprint di notifica comuni a tutto l'ecosistema: manutenzioni scadute trovate tramite il contratto <code>reef_role</code>, e dispositivi diventati irraggiungibili. Otto lingue.</td>
+    <td>Blueprint di automazione comuni a tutto l'ecosistema: manutenzioni scadute trovate tramite il contratto <code>reef_role</code>, dispositivi diventati irraggiungibili, un test periodico dei riscaldatori e una sorveglianza dei relè. Otto lingue.</td>
     <td>tutte e tre le integrazioni</td>
   </tr>
   <tr>
@@ -99,6 +113,42 @@ Le lingue sono blueprint distinti: importarne due ne dà due. Home Assistant non
 - **Manutenzioni scadute.** Ogni pulsante con un `reef_role` che inizia per `maint_`, con avviso quando il suo `days_left` diventa negativo. Nessuna configurazione: le attività vengono trovate da sole. Ogni attività ha il proprio interruttore di notifica, rispettato per impostazione predefinita, così potete silenziarne una senza silenziare le altre.
 - **Dispositivi irraggiungibili.** Un dispositivo viene segnalato quando tutte le sue entità sono non disponibili. Questo richiede un elenco esplicito, e il motivo merita di essere noto: Home Assistant rimuove gli attributi di un'entità non disponibile, quindi `reef_role` sparisce proprio quando il dispositivo cade. Qui la scoperta automatica è impossibile, quindi scegliete voi.
 
+## Test dei riscaldatori
+
+`reef_heater_test` verifica che ogni riscaldatore regga la vasca da solo. Un riscaldatore resta acceso, gli altri vengono spenti per la durata del test, un riscaldatore per esecuzione a rotazione. Il risultato arriva sul telefono. Il test si ferma prima e ripristina i riscaldatori in caso di calo eccessivo o sotto la temperatura di interruzione, e cede a qualsiasi altra cosa agisca sui riscaldatori nel frattempo.
+
+Un misuratore trasforma il risultato in una prova, perché una stanza calda può nascondere un riscaldatore guasto. Viene trovato automaticamente per una presa Red Sea o una presa smart: il test distingue allora un riscaldatore guasto da uno sottodimensionato, non dà risultato se il riscaldatore non ha mai consumato e verifica che i riscaldatori spenti non consumino più. Un riscaldatore su una presa che segue una sonda o un programma viene rifiutato: mettete prima la presa in manuale. Un helper di testo opzionale conserva l'ultimo risultato, e la sua cronologia i precedenti.
+
+In estate un riscaldatore non ha nulla da fare quando la stanza raggiunge la temperatura della vasca o il setpoint, e un test non dimostrerebbe nulla: indicate la temperatura della stanza e il setpoint, il test viene evitato e lo segnala.
+
+I riscaldatori rimasti spenti dopo un riavvio di Home Assistant vengono riaccesi due minuti dopo l'avvio. Disattivare l'automazione durante un test è l'unico caso da cui non può riprendersi: lasciate prima finire il test. Per avviare un test da soli, usate il pulsante **Esegui** dell'automazione per il prossimo riscaldatore della rotazione, oppure emettete l'evento `reef_heater_test` con `heater: switch.vostro_riscaldatore` per sceglierne uno.
+
+| | |
+|---|---|
+| **English** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.en.yaml) |
+| **Français** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.fr.yaml) |
+| **Deutsch** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.de.yaml) |
+| **Español** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.es.yaml) |
+| **Italiano** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.it.yaml) |
+| **Nederlands** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.nl.yaml) |
+| **Polski** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.pl.yaml) |
+| **Português** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_heater_test.pt.yaml) |
+
+## Sorveglianza dei relè
+
+`reef_relay_watch` vi avvisa quando un relè è spento ma il suo apparecchio consuma ancora: contatto incollato o presa che non obbedisce più. Ogni cinque minuti controlla ogni presa dei ReefControl-Power scelti e ogni porta dei ReefControl scelti, oltre alle prese smart aggiunte, e rileva anche un contatto che si incolla molto dopo lo spegnimento. Nessun test, non viene commutato nulla.
+
+| | |
+|---|---|
+| **English** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.en.yaml) |
+| **Français** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.fr.yaml) |
+| **Deutsch** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.de.yaml) |
+| **Español** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.es.yaml) |
+| **Italiano** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.it.yaml) |
+| **Nederlands** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.nl.yaml) |
+| **Polski** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.pl.yaml) |
+| **Português** | [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/blueprints/automation/reef_relay_watch.pt.yaml) |
+
 ## Da sapere
 
 - L'automazione gira ogni 5 minuti. Percorre solo il dominio `button`, quindi il costo non cresce con la dimensione della vostra installazione.
@@ -108,6 +158,6 @@ Le lingue sono blueprint distinti: importarne due ne dà due. Home Assistant non
 
 ## Sviluppo
 
-`scripts/gen_blueprints.py` produce gli otto file YAML da un modello e una tabella di stringhe; `scripts/gen_readme.py` fa lo stesso per questa pagina. Non modificate mai i file generati: la CI li rigenera e fallisce se il risultato differisce.
+`scripts/gen_blueprints.py` produce i file YAML da un modello e una tabella di stringhe; `scripts/gen_readme.py` fa lo stesso per questa pagina. Non modificate mai i file generati: la CI li rigenera e fallisce se il risultato differisce.
 
 `scripts/check_blueprints.py` fa le veci della suite di test. Analizza ogni file, confronta gli input con il riferimento inglese, verifica che ciascuno sia collegato a una variabile, e compila il Jinja — un tag sbilanciato altrimenti si manifesta solo come un'automazione che smette di scattare.

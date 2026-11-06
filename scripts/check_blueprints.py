@@ -34,6 +34,7 @@ import yaml
 from jinja2 import Environment, TemplateSyntaxError
 
 BLUEPRINTS = Path("blueprints/automation")
+FAMILIES = ["reef_maintenance_notify", "reef_heater_test", "reef_relay_watch"]
 REFERENCE = "en"
 LANGS = ["en", "fr", "de", "es", "it", "nl", "pl", "pt"]
 
@@ -74,13 +75,13 @@ def walk_templates(node: object, path: str = "") -> list[tuple[str, str]]:
     return found
 
 
-def main() -> int:
+def check_family(family: str) -> int:
     errors: list[str] = []
     docs: dict[str, dict] = {}
     raw: dict[str, str] = {}
 
     for lang in LANGS:
-        path = BLUEPRINTS / f"reef_maintenance_notify.{lang}.yaml"
+        path = BLUEPRINTS / f"{family}.{lang}.yaml"
         if not path.exists():
             errors.append(f"{lang}: missing {path}")
             continue
@@ -144,8 +145,8 @@ def main() -> int:
                 errors.append(f"{lang}: bad Jinja at {path_str} -- {exc}")
 
         # Placeholders the generator should have substituted.
-        for marker in ("MSG_OVERDUE", "MSG_UNREACHABLE", "TITLE_PREFIX"):
-            if marker in raw[lang]:
+        for marker in re.findall(r"\b(?:MSG_[A-Z_]+|TITLE_[A-Z]+)\b", raw[lang]):
+            if marker:
                 errors.append(f"{lang}: unsubstituted marker {marker}")
 
         # A translated file that still holds the English message means a
@@ -160,8 +161,15 @@ def main() -> int:
         print(f"\n{len(errors)} problem(s) found.")
         return 1
 
-    print(f"{len(docs)} blueprints, {len(ref_inputs)} inputs each, all consistent.")
+    print(
+        f"{family}: {len(docs)} blueprints, {len(ref_inputs)} inputs each, "
+        "all consistent."
+    )
     return 0
+
+
+def main() -> int:
+    return max(check_family(family) for family in FAMILIES)
 
 
 if __name__ == "__main__":
