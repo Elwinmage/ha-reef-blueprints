@@ -14,13 +14,15 @@
 
 # Beschikbare talen: [<img src="https://flagicons.lipis.dev/flags/4x3/gb.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/README.md) [<img src="https://flagicons.lipis.dev/flags/4x3/fr.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/fr/README.fr.md) [<img src="https://flagicons.lipis.dev/flags/4x3/de.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/de/README.de.md) [<img src="https://flagicons.lipis.dev/flags/4x3/es.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/es/README.es.md) [<img src="https://flagicons.lipis.dev/flags/4x3/it.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/it/README.it.md) <img src="https://flagicons.lipis.dev/flags/4x3/nl.svg" width="5%"/> [<img src="https://flagicons.lipis.dev/flags/4x3/pl.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/pl/README.pl.md) [<img src="https://flagicons.lipis.dev/flags/4x3/pt.svg" width="5%"/>](https://github.com/Elwinmage/ha-reef-blueprints/blob/main/doc/pt/README.pt.md)
 
-Home Assistant automatiserings-blueprints voor het ReefTech-ecosysteem. Ze waarschuwen u op uw telefoon over **achterstallig onderhoud** en **onbereikbare apparaten**, uit welke integratie uw apparatuur ook komt.
+Home Assistant automatiserings-blueprints voor het ReefTech-ecosysteem. Ze waarschuwen u op uw telefoon over **achterstallig onderhoud** en **onbereikbare apparaten**, uit welke integratie uw apparatuur ook komt, **testen uw verwarmers** één voor één en **bewaken uw relais** op een apparaat dat na uitschakelen stroom blijft trekken.
 
 <!-- ecosystem:start -->
 
 ## Verwante projecten
 
 De ReefTech-projecten grijpen in elkaar: de integraties brengen uw apparatuur in Home Assistant, de kaart toont en bedient ze, en de back-up houdt alles draaiend tijdens een stroomuitval. Elk werkt ook op zichzelf.
+
+<p align="center"><a href="https://elwinmage.github.io/reeftank/"><img src="https://raw.githubusercontent.com/Elwinmage/reeftank/main/assets/flower/ecosystem-flower.png" width="480" alt="ReefTech project ecosystem" /></a></p>
 
 <table>
   <tr>
@@ -50,13 +52,25 @@ De ReefTech-projecten grijpen in elkaar: de integraties brengen uw apparatuur in
   <tr>
     <td><img src="https://raw.githubusercontent.com/Elwinmage/ha-reef-card/main/icon.png" width="64" alt="ha-reef-card" /></td>
     <td>🪸<br /><a href="https://github.com/Elwinmage/ha-reef-card"><b>ha-reef-card</b></a></td>
-    <td>Interactieve grafische weergave van elk apparaat op uw dashboard, en de enige manier om geavanceerde schema's te bewerken. Leest de drie integraties via het gedeelde <code>reef_role</code>-contract, zonder configuratie aan de kaartzijde. Tekent ook de energiestromen van reefbeatEnergyBackup.</td>
-    <td>alle drie de integraties</td>
+    <td>Interactieve grafische weergave van elk apparaat op uw dashboard, en de enige manier om geavanceerde schema's te bewerken. Leest de drie integraties via het gedeelde <code>reef_role</code>-contract, zonder configuratie aan de kaartzijde. Tekent ook de energiestromen van reefbeatEnergyBackup. De aquariumkaart brengt uw bak tot leven met ha-reeftank-component.</td>
+    <td>alle drie de integraties, en ha-reeftank-component voor het aquarium</td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/Elwinmage/ha-reeftank-component/main/icon.png" width="64" alt="ha-reeftank-component" /></td>
+    <td>🐟<br /><a href="https://github.com/Elwinmage/ha-reeftank-component"><b>ha-reeftank-component</b></a></td>
+    <td>Een levend beeld van uw bak op het dashboard: uw foto, verlicht door uw echte lampen, met geanimeerde vissen en koralen, en uw apparaten en entiteiten erop. Bewaart de aquaria en hun bezetting, legt de voederingen vast.</td>
+    <td>ha-reef-card</td>
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/Elwinmage/reeftank-catalog/main/icon.png" width="64" alt="reeftank-catalog" /></td>
+    <td>🐡<br /><a href="https://github.com/Elwinmage/reeftank-catalog"><b>reeftank-catalog</b></a></td>
+    <td>Vissen, koralen en texturen van de aquariumkaart, gedownload en bijgehouden door ha-reeftank-component.</td>
+    <td>ha-reeftank-component</td>
   </tr>
   <tr>
     <td><img src="https://raw.githubusercontent.com/Elwinmage/ha-reef-blueprints/main/icon.png" width="64" alt="ha-reef-blueprints" /></td>
     <td>🐬<br /><b>ha-reef-blueprints</b><br /><i>(deze repository)</i></td>
-    <td>Meldings-blueprints voor het hele ecosysteem: achterstallig onderhoud gevonden via het <code>reef_role</code>-contract, en apparaten die onbereikbaar zijn geworden. Acht talen.</td>
+    <td>Automatiserings-blueprints voor het hele ecosysteem: achterstallig onderhoud gevonden via het <code>reef_role</code>-contract, apparaten die onbereikbaar zijn geworden, een periodieke verwarmertest en relaisbewaking. Acht talen.</td>
     <td>alle drie de integraties</td>
   </tr>
   <tr>

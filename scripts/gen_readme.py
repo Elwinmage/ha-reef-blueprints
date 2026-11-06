@@ -59,7 +59,8 @@ T: dict[str, dict[str, str]] = {
             "Home Assistant automation blueprints for the ReefTech ecosystem. "
             "They notify you on your phone about **overdue maintenance** and "
             "**unreachable devices**, whichever integration your equipment "
-            "comes from."
+            "comes from, **test your heaters** one at a time and **watch your "
+            "relays** for an appliance that keeps drawing power once off."
         ),
         "why_title": "Why a separate repository",
         "why": (
@@ -149,7 +150,9 @@ T: dict[str, dict[str, str]] = {
             "Blueprints d'automatisation Home Assistant pour l'écosystème "
             "ReefTech. Ils vous préviennent sur votre téléphone des "
             "**entretiens en retard** et des **appareils injoignables**, quelle "
-            "que soit l'intégration dont vient votre matériel."
+            "que soit l'intégration dont vient votre matériel, **testent vos "
+            "chauffages** un par un et **surveillent vos relais** pour repérer "
+            "un appareil qui consomme encore une fois coupé."
         ),
         "why_title": "Pourquoi un dépôt séparé",
         "why": (
@@ -244,7 +247,9 @@ T: dict[str, dict[str, str]] = {
             "Home-Assistant-Automatisierungs-Blueprints für das "
             "ReefTech-Ökosystem. Sie benachrichtigen Sie auf dem Telefon über "
             "**überfällige Wartungen** und **nicht erreichbare Geräte**, "
-            "unabhängig davon, aus welcher Integration Ihre Technik stammt."
+            "unabhängig davon, aus welcher Integration Ihre Technik stammt, "
+            "**testen Ihre Heizer** einzeln und **überwachen Ihre Relais** auf "
+            "ein Gerät, das nach dem Ausschalten weiter Strom zieht."
         ),
         "why_title": "Warum ein eigenes Repository",
         "why": (
@@ -340,7 +345,9 @@ T: dict[str, dict[str, str]] = {
             "Blueprints de automatización de Home Assistant para el ecosistema "
             "ReefTech. Le avisan en el móvil de los **mantenimientos "
             "vencidos** y de los **dispositivos no disponibles**, venga su "
-            "equipo de la integración que venga."
+            "equipo de la integración que venga, **prueban sus calentadores** "
+            "uno a uno y **vigilan sus relés** para detectar un aparato que "
+            "sigue consumiendo una vez apagado."
         ),
         "why_title": "Por qué un repositorio aparte",
         "why": (
@@ -433,7 +440,9 @@ T: dict[str, dict[str, str]] = {
             "Blueprint di automazione Home Assistant per l'ecosistema "
             "ReefTech. Vi avvisano sul telefono delle **manutenzioni scadute** "
             "e dei **dispositivi irraggiungibili**, da qualunque integrazione "
-            "provenga la vostra attrezzatura."
+            "provenga la vostra attrezzatura, **provano i riscaldatori** uno "
+            "alla volta e **sorvegliano i relè** per scoprire un apparecchio "
+            "che consuma ancora una volta spento."
         ),
         "why_title": "Perché un repository separato",
         "why": (
@@ -527,7 +536,9 @@ T: dict[str, dict[str, str]] = {
             "Home Assistant automatiserings-blueprints voor het "
             "ReefTech-ecosysteem. Ze waarschuwen u op uw telefoon over "
             "**achterstallig onderhoud** en **onbereikbare apparaten**, uit "
-            "welke integratie uw apparatuur ook komt."
+            "welke integratie uw apparatuur ook komt, **testen uw verwarmers** "
+            "één voor één en **bewaken uw relais** op een apparaat dat na "
+            "uitschakelen stroom blijft trekken."
         ),
         "why_title": "Waarom een aparte repository",
         "why": (
@@ -623,7 +634,9 @@ T: dict[str, dict[str, str]] = {
             "Blueprinty automatyzacji Home Assistant dla ekosystemu ReefTech. "
             "Powiadamiają na telefonie o **zaległych konserwacjach** i o "
             "**niedostępnych urządzeniach**, niezależnie od tego, z której "
-            "integracji pochodzi sprzęt."
+            "integracji pochodzi sprzęt, **testują grzałki** pojedynczo i "
+            "**nadzorują przekaźniki**, wykrywając urządzenie, które pobiera "
+            "prąd po wyłączeniu."
         ),
         "why_title": "Dlaczego osobne repozytorium",
         "why": (
@@ -715,7 +728,9 @@ T: dict[str, dict[str, str]] = {
             "Blueprints de automação do Home Assistant para o ecossistema "
             "ReefTech. Avisam-no no telemóvel das **manutenções em atraso** e "
             "dos **aparelhos inacessíveis**, venha o seu equipamento da "
-            "integração que vier."
+            "integração que vier, **testam os seus aquecedores** um a um e "
+            "**vigiam os seus relés** para detetar um aparelho que continua a "
+            "consumir depois de desligado."
         ),
         "why_title": "Porquê um repositório separado",
         "why": (
